@@ -10,15 +10,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import prog5121_poe_project.Login;
+import prog5121_poe_project.Task;
 
 /**
  *
  * @author lehlohonolomalowadihlare
  */
-public class LoginTest {
+public class TaskTest {
     
-    public LoginTest() {
+    public TaskTest() {
     }
     
     @BeforeAll
@@ -38,95 +38,98 @@ public class LoginTest {
     }
 
     /**
-     * Test of checkUserName method, of class Login.
+     * Test of checkTaskDescription method, of class Task.
      */
     @Test
-    public void testCheckUserName() {
-        System.out.println("checkUserName");
-        String username = "";
-        Login instance = new Login();
+    public void testCheckTaskDescription() {
+        System.out.println("checkTaskDescription");
+        String description = "";
+        Task instance = null;
         boolean expResult = false;
-        boolean result = instance.checkUserName(username);
+        boolean result = instance.checkTaskDescription(description);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of checkPasswordComplexity method, of class Login.
+     * Test of createTaskID method, of class Task.
      */
     @Test
-    public void testCheckPasswordComplexity() {
-        System.out.println("checkPasswordComplexity");
-        String password = "";
-        Login instance = new Login();
-        boolean expResult = false;
-        boolean result = instance.checkPasswordComplexity(password);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of checkCellPhoneNumber method, of class Login.
-     */
-    @Test
-    public void testCheckCellPhoneNumber() {
-        System.out.println("checkCellPhoneNumber");
-        String cellNo = "";
-        Login instance = new Login();
-        boolean expResult = false;
-        boolean result = instance.checkCellPhoneNumber(cellNo);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of registerUser method, of class Login.
-     */
-    @Test
-    public void testRegisterUser() {
-        System.out.println("registerUser");
-        String username = "";
-        String password = "";
-        String firstName = "";
-        String lastName = "";
-        String cellPhoneNumber = "";
-        Login instance = new Login();
+    public void testCreateTaskID() {
+        System.out.println("createTaskID");
+        Task instance = null;
         String expResult = "";
-        String result = instance.registerUser(username, password, firstName, lastName, cellPhoneNumber);
+        String result = instance.createTaskID();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of loginUser method, of class Login.
+     * Test of printTaskDetails method, of class Task.
      */
     @Test
-    public void testLoginUser() {
-        System.out.println("loginUser");
-        String enteredUsername = "";
-        String enteredPassword = "";
-        Login instance = new Login();
-        boolean expResult = false;
-        boolean result = instance.loginUser(enteredUsername, enteredPassword);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of returnLoginStatus method, of class Login.
-     */
-    @Test
-    public void testReturnLoginStatus() {
-        System.out.println("returnLoginStatus");
-        boolean isLoggedIn = false;
-        Login instance = new Login();
+    public void testPrintTaskDetails() {
+        System.out.println("printTaskDetails");
+        Task instance = null;
         String expResult = "";
-        String result = instance.returnLoginStatus(isLoggedIn);
+        String result = instance.printTaskDetails();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of returnTotalHours method, of class Task.
+     */
+    @Test
+    public void testReturnTotalHours() {
+        System.out.println("returnTotalHours");
+        int expResult = 0;
+        int result = Task.returnTotalHours();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getTaskId method, of class Task.
+     */
+    @Test
+    public void testGetTaskId() {
+        System.out.println("getTaskId");
+        Task instance = null;
+        String expResult = "";
+        String result = instance.getTaskId();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getTaskDuration method, of class Task.
+     */
+    @Test
+    public void testGetTaskDuration() {
+        System.out.println("getTaskDuration");
+        Task instance = null;
+        int expResult = 0;
+        int result = instance.getTaskDuration();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getTaskStatus method, of class Task.
+     */
+    @Test
+    public void testGetTaskStatus() {
+        System.out.println("getTaskStatus");
+        Task instance = null;
+        String expResult = "";
+        String result = instance.getTaskStatus();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
