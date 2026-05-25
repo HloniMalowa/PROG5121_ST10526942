@@ -1,0 +1,18 @@
+{
+  "taskName": "Login Feature",
+  "taskNumber": 0,
+  "taskDescription": " Create login validation rules",
+  "developerDetails": "Lehlohonolo Malowadihlare",
+  "taskDuration": 8,
+  "taskId": "LO:0:ARE",
+  "taskStatus": "To Do"
+}
+{
+  "taskName": "Add Task",
+  "taskNumber": 1,
+  "taskDescription": " Create task entry loop structure",
+  "developerDetails": "Lehlohonolo Malowadihlare",
+  "taskDuration": 10,
+  "taskId": "AD:1:ARE",
+  "taskStatus": "Doing"
+}

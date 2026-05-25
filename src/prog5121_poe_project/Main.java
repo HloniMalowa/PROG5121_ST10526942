@@ -1,128 +1,254 @@
 package prog5121_poe_project;
 
-import javax.swing.JOptionPane;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
+
         Scanner input = new Scanner(System.in);
+
         Login loginSystem = new Login();
 
-        System.out.println("--- USER REGISTRATION ---");
-        
+        // =========================
+        // USER REGISTRATION
+        // =========================
+
+        System.out.println("===== USER REGISTRATION =====");
+
         System.out.print("Enter First Name: ");
         String firstName = input.nextLine();
-        
+
         System.out.print("Enter Last Name: ");
         String lastName = input.nextLine();
-        
+
         System.out.print("Enter Username: ");
         String username = input.nextLine();
-        
+
         System.out.print("Enter Password: ");
         String password = input.nextLine();
-        
-        System.out.print("Enter Cell Phone Number (e.g., +27123456789): ");
+
+        System.out.print("Enter Cell Phone Number: ");
         String cellNo = input.nextLine();
 
-        System.out.println("\n--- REGISTRATION STATUS ---");
-        String registrationReport = loginSystem.registerUser(username, password, firstName, lastName, cellNo);
+        String registrationReport =
+                loginSystem.registerUser(
+                        username,
+                        password,
+                        firstName,
+                        lastName,
+                        cellNo
+                );
+
+        System.out.println("\n===== REGISTRATION STATUS =====");
         System.out.println(registrationReport);
 
-        // Only proceed if registration was fully successful
-        if (registrationReport.contains("successfully captured")) {
-            System.out.println("\n--- USER LOGIN ---");
-            
-            System.out.print("Enter Username to Login: ");
-            String loginUser = input.nextLine();
-            
-            System.out.print("Enter Password to Login: ");
-            String loginPass = input.nextLine();
+        // =========================
+        // LOGIN SECTION
+        // =========================
 
-            boolean isSuccess = loginSystem.loginUser(loginUser, loginPass);
-            
-            System.out.println("\n--- LOGIN STATUS ---");
-            String loginReport = loginSystem.returnLoginStatus(isSuccess);
-            System.out.println(loginReport);
-            
-            // IF LOGIN IS SUCCESSFUL -> ENTER APPLICATION LOOP
-            if (isSuccess) {
-                JOptionPane.showMessageDialog(null, "Welcome to EasyKanban");
-                
-                boolean exitApp = false;
-                
-                while (!exitApp) {
-                    // Display Menu Options
-                    String menuOptions = "Select an option:\n" +
-                                         "1. Add task details\n" +
-                                         "2. Show report (Coming Soon)\n" +
-                                         "3. Quit";
-                    
-                    String choiceStr = JOptionPane.showInputDialog(menuOptions);
-                    
-                    if (choiceStr == null) {
-                        break; 
-                    }
-                    
-                    int choice = Integer.parseInt(choiceStr);
-                    
-                    switch (choice) {
-                        case 1:
-                            String numTasksStr = JOptionPane.showInputDialog("How many tasks would you like to enter?");
-                            int numTasks = Integer.parseInt(numTasksStr);
-                            
-                            for (int i = 0; i < numTasks; i++) {
-                                String taskName = JOptionPane.showInputDialog("Enter Task Name for task " + i + ":");
-                                
-                                String taskDesc = "";
-                                boolean validDesc = false;
-                                
-                                while (!validDesc) {
-                                    taskDesc = JOptionPane.showInputDialog("Enter Task Description (Max 50 chars):");
-                                    Task dummy = new Task(taskName, i, taskDesc, "", 0, "");
-                                    if (dummy.checkTaskDescription(taskDesc)) {
-                                        JOptionPane.showMessageDialog(null, "Task successfully captured");
-                                        validDesc = true;
-                                    } else {
-                                        JOptionPane.showMessageDialog(null, "Please enter a task description of less than 50 characters");
+        if (registrationReport.contains("successfully")) {
+
+            System.out.println("\n===== USER LOGIN =====");
+
+            System.out.print("Enter Username: ");
+            String loginUsername = input.nextLine();
+
+            System.out.print("Enter Password: ");
+            String loginPassword = input.nextLine();
+
+            boolean loginSuccess =
+                    loginSystem.loginUser(
+                            loginUsername,
+                            loginPassword
+                    );
+
+            String loginStatus =
+                    loginSystem.returnLoginStatus(
+                            loginSuccess
+                    );
+
+            System.out.println("\n===== LOGIN STATUS =====");
+            System.out.println(loginStatus);
+
+            // =========================
+            // QUICKCHAT MENU
+            // =========================
+
+            if (loginSuccess) {
+
+                System.out.println("\nWelcome to QuickChat.");
+
+                boolean quit = false;
+
+                int messageCounter = 0;
+
+                while (!quit) {
+
+                    System.out.println("\n===== QUICKCHAT MENU =====");
+                    System.out.println("1. Send Messages");
+                    System.out.println("2. Show recently sent messages");
+                    System.out.println("3. Quit");
+
+                    System.out.print("Choose an option: ");
+
+                    String menuChoice =
+                            input.nextLine();
+
+                    switch (menuChoice) {
+
+                        // =========================
+                        // SEND MESSAGE
+                        // =========================
+
+                        case "1":
+
+                            int numMessages = 0;
+
+                            while (true) {
+
+                                try {
+
+                                    System.out.print(
+                                            "How many messages would you like to send? ");
+
+                                    numMessages =
+                                            Integer.parseInt(
+                                                    input.nextLine()
+                                            );
+
+                                    if (numMessages > 0) {
+                                        break;
                                     }
+
+                                    System.out.println(
+                                            "Please enter a number greater than 0.");
+
+                                } catch (NumberFormatException e) {
+
+                                    System.out.println(
+                                            "Invalid number entered.");
                                 }
-                                
-                                String devDetails = JOptionPane.showInputDialog("Enter Developer First and Last Name:");
-                                String durationStr = JOptionPane.showInputDialog("Enter Task Duration (in hours):");
-                                int duration = Integer.parseInt(durationStr);
-                                
-                                String statusMenu = "Select Task Status:\n1. To Do\n2. Doing\n3. Done";
-                                String statusChoice = JOptionPane.showInputDialog(statusMenu);
-                                String status = "To Do";
-                                if ("2".equals(statusChoice)) status = "Doing";
-                                if ("3".equals(statusChoice)) status = "Done";
-                                
-                                Task newTask = new Task(taskName, i, taskDesc, devDetails, duration, status);
-                                JOptionPane.showMessageDialog(null, newTask.printTaskDetails());
                             }
-                            
-                            JOptionPane.showMessageDialog(null, "Total hours combined across tasks: " + Task.returnTotalHours() + " hours");
+
+                            for (int i = 0;
+                                 i < numMessages;
+                                 i++) {
+
+                                System.out.println(
+                                        "\n===== MESSAGE "
+                                                + (i + 1)
+                                                + " =====");
+
+                                System.out.print(
+                                        "Enter recipient cell number: ");
+
+                                String recipient =
+                                        input.nextLine();
+
+                                System.out.print(
+                                        "Enter your message: ");
+
+                                String messageText =
+                                        input.nextLine();
+
+                                Message message =
+                                        new Message(
+                                                messageCounter,
+                                                recipient,
+                                                messageText
+                                        );
+
+                                System.out.println(
+                                        message.checkRecipientCell()
+                                );
+
+                                String lengthResult =
+                                        message.checkMessageLength();
+
+                                System.out.println(lengthResult);
+
+                                if (lengthResult.equals(
+                                        "Message ready to send.")) {
+
+                                    System.out.println(
+                                            "\n===== MESSAGE DETAILS =====");
+
+                                    System.out.println(
+                                            message.printMessages()
+                                    );
+
+                                    System.out.println(
+                                            "Choose an option:");
+                                    System.out.println(
+                                            "1. Send Message");
+                                    System.out.println(
+                                            "2. Disregard Message");
+                                    System.out.println(
+                                            "3. Store Message");
+
+                                    System.out.print(
+                                            "Your choice: ");
+
+                                    int action =
+                                            Integer.parseInt(
+                                                    input.nextLine()
+                                            );
+
+                                    System.out.println(
+                                            message.sentMessage(action)
+                                    );
+
+                                    messageCounter++;
+                                }
+                            }
+
+                            // PART 2 REQUIREMENT
+                            System.out.println(
+                                    "\nTotal messages sent: "
+                                            + Message.returnTotalMessages()
+                            );
+
                             break;
-                            
-                        case 2:
-                            JOptionPane.showMessageDialog(null, "Coming Soon!");
+
+                        // =========================
+                        // SHOW REPORT
+                        // =========================
+
+                        case "2":
+
+                            System.out.println(
+                                    "Coming Soon.");
+
                             break;
-                            
-                        case 3:
-                            exitApp = true;
+
+                        // =========================
+                        // QUIT
+                        // =========================
+
+                        case "3":
+
+                            System.out.println(
+                                    "Exiting QuickChat...");
+
+                            quit = true;
+
                             break;
-                            
+
                         default:
-                            JOptionPane.showMessageDialog(null, "Invalid choice. Please try again.");
+
+                            System.out.println(
+                                    "Invalid menu option.");
                     }
                 }
             }
+
         } else {
-            System.out.println("\nRegistration failed. Please fix formatting issues and try again.");
+
+            System.out.println(
+                    "\nRegistration failed.");
         }
-        
+
         input.close();
     }
 }
-///final submission check
