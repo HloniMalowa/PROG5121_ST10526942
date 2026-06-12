@@ -1,8 +1,8 @@
 package prog5121_poe_project;
 
-import java.util.Random;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 public class Message {
 
@@ -13,135 +13,99 @@ public class Message {
 
     private static int totalMessages = 0;
 
-    // Constructor
-    public Message(int messageNumber,
-                   String recipient,
-                   String messageText) {
+    public Message(int messageNumber, String recipient, String messageText) {
 
         this.messageNumber = messageNumber;
-        this.recipient = recipient;
-        this.messageText = messageText;
+        this.recipient = (recipient == null) ? "" : recipient;
+        this.messageText = (messageText == null) ? "" : messageText;
 
         generateMessageID();
     }
 
-    // Generate random 10 digit ID
     private void generateMessageID() {
-
         Random random = new Random();
-
-        long number =
-                1000000000L +
-                (long)(random.nextDouble() * 9000000000L);
-
+        long number = 1000000000L + Math.abs(random.nextLong()) % 9000000000L;
         messageID = String.valueOf(number);
     }
 
-    // Check Message ID length
     public boolean checkMessageID() {
-
-        return messageID.length() <= 10;
+        return messageID != null && messageID.length() == 10;
     }
 
-    // Check recipient number
     public String checkRecipientCell() {
 
         if (recipient.matches("^\\+27\\d{9}$")) {
-
             return "Cell phone number successfully captured.";
         }
 
         return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
     }
 
-    // Check message length
     public String checkMessageLength() {
 
         if (messageText.length() <= 250) {
-
             return "Message ready to send.";
         }
 
-        int excess =
-                messageText.length() - 250;
-
         return "Message exceeds 250 characters by "
-                + excess
+                + (messageText.length() - 250)
                 + "; please reduce the size.";
     }
 
-    // Create message hash
     public String createMessageHash() {
 
-        String[] words =
-                messageText.split(" ");
+        if (messageText.trim().isEmpty()) {
+            return "INVALID:EMPTY";
+        }
 
-        String firstWord =
-                words[0].toUpperCase();
+        String[] words = messageText.trim().split("\\s+");
 
-        String lastWord =
-                words[words.length - 1].toUpperCase();
+        String first = words[0].toUpperCase();
+        String last = words[words.length - 1].toUpperCase();
 
         return messageID.substring(0, 2)
-                + ":"
-                + messageNumber
-                + ":"
-                + firstWord
-                + lastWord;
+                + ":" + messageNumber
+                + ":" + first
+                + last;
     }
 
-    // Store message in JSON file
     public void storeMessage() {
 
-        try {
+    try (FileWriter writer =
+            new FileWriter("storedMessages.json", true)) {
 
-            FileWriter writer =
-                    new FileWriter("storedMessages.json", true);
+        writer.write("{\n");
+        writer.write("\"messageID\":\"" + messageID + "\",\n");
+        writer.write("\"recipient\":\"" + recipient + "\",\n");
+        writer.write("\"message\":\"" + messageText + "\"\n");
+        writer.write("}\n");
 
-            writer.write("{\n");
-            writer.write("\"messageID\":\"" + messageID + "\",\n");
-            writer.write("\"recipient\":\"" + recipient + "\",\n");
-            writer.write("\"message\":\"" + messageText + "\"\n");
-            writer.write("}\n");
-
-            writer.close();
-
-        } catch (IOException e) {
-
-            System.out.println("Error storing message.");
-        }
+    } catch (IOException e) {
+        System.out.println("Error storing message.");
     }
+}
 
-    // Send / Store / Disregard
     public String sentMessage(int choice) {
 
         switch (choice) {
 
             case 1:
-
                 totalMessages++;
-
                 return "Message successfully sent.";
 
             case 2:
-
                 return "Press 0 to delete the message.";
 
             case 3:
-
                 storeMessage();
-
                 return "Message successfully stored.";
 
             default:
-
                 return "Invalid option.";
         }
     }
 
-    // Print details
     public String printMessages() {
-
         return """
                Message ID: %s
                Message Hash: %s
@@ -155,9 +119,7 @@ public class Message {
         );
     }
 
-    // Total sent messages
     public static int returnTotalMessages() {
-
         return totalMessages;
     }
 
